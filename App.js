@@ -19,8 +19,8 @@ function App() {
           component={WelcomeScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="StarWars Characters" component={CharacterList} />
-        <Stack.Screen name="My StarWars Favorites" component={Favorite} />
+        <Stack.Screen name="StarWarsCharacters" component={CharacterList} />
+        <Stack.Screen name="MyStarWarsFavorites" component={Favorite} />
       </Stack.Navigator>
     </NavigationContainer>
   );
