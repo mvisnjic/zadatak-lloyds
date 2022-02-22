@@ -10,20 +10,6 @@ import {
 } from "react-native";
 import bgImage from "../images/BackgroundPhoto.jpg";
 
-const Item = ({ name }) => (
-  <View style={styles.item}>
-    <Text style={styles.name}>{title}</Text>
-  </View>
-);
-
-const Cat = () => {
-  return (
-    <View>
-      <Text>I am also a cat!</Text>
-    </View>
-  );
-};
-
 function CharacterList() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
