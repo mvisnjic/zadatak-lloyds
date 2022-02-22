@@ -10,41 +10,49 @@ import {
 } from "react-native";
 import bgImage from "../images/BackgroundPhoto.jpg";
 
+const Item = ({ name }) => (
+  <View style={styles.item}>
+    <Text style={styles.name}>{title}</Text>
+  </View>
+);
+
+const Cat = () => {
+  return (
+    <View>
+      <Text>I am also a cat!</Text>
+    </View>
+  );
+};
+
 function CharacterList() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
-  const getPeople = async () => {
-    try {
-      const response = await fetch("https://swapi.dev/api/people/");
-      const json = await response.json();
-      setData(json.people);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  console.log(data);
 
   useEffect(() => {
-    getPeople();
+    fetch("https://swapi.dev/api/people/")
+      .then((response) => response.json())
+      .then((json) => setData(json))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
         <View style={styles.dataContainer}>
-          <Text style={styles.name}>First</Text>
-          <Text style={styles.surname}>Last:</Text>
-
           <View>
             {isLoading ? (
               <ActivityIndicator />
             ) : (
               <FlatList
-                data={data}
+                data={data.results}
                 keyExtractor={({ id }, index) => id}
-                renderItem={({ item }) => <Text>{item.name}</Text>}
+                renderItem={({ item }) => (
+                  <View style={styles.detailsContainer}>
+                    <Text style={styles.name}>Name: {item.name}</Text>
+                  </View>
+                )}
               />
             )}
           </View>
@@ -59,41 +67,30 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "stretch",
     justifyContent: "flex-start",
-    marginTop: 20,
-    marginBottom: 20,
   },
   bgImage: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "white",
-    opacity: 0.75,
   },
-  dataContainer: {
+  detailsContainer: {
+    flex: 1,
     alignItems: "flex-start",
     justifyContent: "flex-start",
     paddingVertical: 20,
-    marginLeft: 5,
-    marginRight: 5,
-    borderRadius: 4,
     elevation: 3,
-    backgroundColor: "white",
-    opacity: 0.77,
+    borderRadius: 4,
+    backgroundColor: "gray",
+    marginTop: 1,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    opacity: 0.8,
   },
   name: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: "bold",
     letterSpacing: 0.25,
-    color: "black",
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-  },
-  surname: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "black",
+    color: "white",
     paddingHorizontal: 10,
     paddingVertical: 15,
   },

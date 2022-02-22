@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   welcome: {
-    top: 80,
+    top: 60,
     alignItems: "center",
   },
   welcomeMsg: {
-    fontSize: 35,
+    fontSize: 45,
     color: "#fff",
   },
   containerButton: {
