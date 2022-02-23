@@ -13,37 +13,7 @@ import bgImage from "../images/BackgroundPhoto.jpg";
 function CharacterList() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const urls = [
-    /* "https://swapi.dev/api/people/",
-    "https://swapi.dev/api/people/?page=2",
-    "https://swapi.dev/api/people/?page=3",
-    "https://swapi.dev/api/people/?page=4",
-    "https://swapi.dev/api/people/?page=5",
-    "https://swapi.dev/api/people/?page=6",
-    "https://swapi.dev/api/people/?page=7",
-    "https://swapi.dev/api/people/?page=8",
-    "https://swapi.dev/api/people/?page=9", */
-    1, 2, 3, 4, 5, 6, 7, 8, 9,
-  ];
-  //console.log(data);
-
-  /* useEffect(() => {
-    fetch("https://swapi.dev/api/people/")
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
-  }, []); */
-
-  /* Promise.all(
-    urls.map((url) => {
-      fetch(url)
-        .then((response) => response.text())
-        .then((json) => setData(json))
-        .catch((error) => console.log(error))
-        .finally(() => {setLoading(false))
-    })
-  ); */
+  const urls = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   const der = async (x) => {
     const f = await fetch(`https://swapi.dev/api/people/?page=${x}`);
@@ -52,21 +22,28 @@ function CharacterList() {
   };
 
   urls.forEach(async (url) => {
-    console.log(await der(url));
+    //console.log(await der(url));
   });
+
+  const controller = new AbortController();
+  const { signal } = controller;
 
   Promise.all(
     urls.map((x) =>
-      fetch(`https://swapi.dev/api/people/?page=${x}`).then((response) =>
-        response.json()
+      fetch(`https://swapi.dev/api/people/?page=${x}`, { signal }).then(
+        (response) => response.json()
       )
     )
-  ).then((json) => {
-    console.log(json);
-    // setData(json);
-    // console.log(data);
-  });
+  )
+    .then((json) => {
+      setData(json);
+      setLoading(false);
+      console.log(json);
+    })
+    .catch((error) => console.log(error));
 
+  setTimeout(() => controller.abort(), 2500);
+  console.log(data);
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
@@ -76,11 +53,13 @@ function CharacterList() {
               <ActivityIndicator />
             ) : (
               <FlatList
-                data={data.results}
-                keyExtractor={({ id }, index) => id}
+                data={data[0].results}
+                //keyExtractor={({ id }, index) => id}
                 renderItem={({ item }) => (
                   <View style={styles.detailsContainer}>
-                    <Text style={styles.name}>Name: {item.name}</Text>
+                    <Text style={styles.name}>
+                      Name: {item.name} {item.height}
+                    </Text>
                   </View>
                 )}
               />
