@@ -13,15 +13,59 @@ import bgImage from "../images/BackgroundPhoto.jpg";
 function CharacterList() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  console.log(data);
+  const urls = [
+    /* "https://swapi.dev/api/people/",
+    "https://swapi.dev/api/people/?page=2",
+    "https://swapi.dev/api/people/?page=3",
+    "https://swapi.dev/api/people/?page=4",
+    "https://swapi.dev/api/people/?page=5",
+    "https://swapi.dev/api/people/?page=6",
+    "https://swapi.dev/api/people/?page=7",
+    "https://swapi.dev/api/people/?page=8",
+    "https://swapi.dev/api/people/?page=9", */
+    1, 2, 3, 4, 5, 6, 7, 8, 9,
+  ];
+  //console.log(data);
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetch("https://swapi.dev/api/people/")
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, []); */
+
+  /* Promise.all(
+    urls.map((url) => {
+      fetch(url)
+        .then((response) => response.text())
+        .then((json) => setData(json))
+        .catch((error) => console.log(error))
+        .finally(() => {setLoading(false))
+    })
+  ); */
+
+  const der = async (x) => {
+    const f = await fetch(`https://swapi.dev/api/people/?page=${x}`);
+    const j = await f.json();
+    return j;
+  };
+
+  urls.forEach(async (url) => {
+    console.log(await der(url));
+  });
+
+  Promise.all(
+    urls.map((x) =>
+      fetch(`https://swapi.dev/api/people/?page=${x}`).then((response) =>
+        response.json()
+      )
+    )
+  ).then((json) => {
+    console.log(json);
+    // setData(json);
+    // console.log(data);
+  });
 
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
