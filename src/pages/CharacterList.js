@@ -9,61 +9,68 @@ import {
   FlatList,
 } from "react-native";
 import bgImage from "../images/BackgroundPhoto.jpg";
+const axios = require("axios");
+
+/* function to find all people. founded on github: https://gist.github.com/go-diego/3771c6917d9261a428d80fa6c3d904ff */
+function getAllStarwarsPeople() {
+  let people = [];
+  // first page
+  return axios("https://swapi.dev/api/people/")
+    .then((response) => {
+      // collect people from first page
+      people = response.data.results;
+      return response.data.count;
+    })
+    .then((count) => {
+      // exclude the first request
+      const numberOfPagesLeft = Math.ceil((count - 1) / 10);
+      let promises = [];
+      // start at 2 as you already queried the first page
+      for (let i = 2; i <= numberOfPagesLeft; i++) {
+        promises.push(axios(`https://swapi.dev/api/people?page=${i}`));
+      }
+      return Promise.all(promises);
+    })
+    .then((response) => {
+      //get the rest records - pages 2 through n.
+      people = response.reduce(
+        (acc, data) => [...acc, ...data.data.results],
+        people
+      );
+      return people;
+    })
+    .catch((error) => console.log("Properly handle your exception here"));
+}
 
 function CharacterList() {
-  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const urls = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  const der = async (x) => {
-    const f = await fetch(`https://swapi.dev/api/people/?page=${x}`);
-    const j = await f.json();
-    return j;
-  };
+  useEffect(() => {
+    (async () => {
+      const starwarsPeople = await getAllStarwarsPeople();
+      for (let i = 0; i < starwarsPeople.length; i++) {
+        //allNames.push(starwarsPeople[i].name);
+        //console.log(starwarsPeople[i].name);
+        const element = starwarsPeople[i];
+        setData(element);
+        console.log(JSON.stringify(element.name));
+      }
+    })();
+  }, []);
 
-  urls.forEach(async (url) => {
-    //console.log(await der(url));
-  });
-
-  const controller = new AbortController();
-  const { signal } = controller;
-
-  Promise.all(
-    urls.map((x) =>
-      fetch(`https://swapi.dev/api/people/?page=${x}`, { signal }).then(
-        (response) => response.json()
-      )
-    )
-  )
-    .then((json) => {
-      setData(json);
-      setLoading(false);
-      console.log(json);
-    })
-    .catch((error) => console.log(error));
-
-  setTimeout(() => controller.abort(), 2500);
-  console.log(data);
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
         <View style={styles.dataContainer}>
           <View>
-            {isLoading ? (
-              <ActivityIndicator />
-            ) : (
-              <FlatList
-                data={data[0].results}
-                //keyExtractor={({ id }, index) => id}
-                renderItem={({ item }) => (
-                  <View style={styles.detailsContainer}>
-                    <Text style={styles.name}>
-                      Name: {item.name} {item.height}
-                    </Text>
-                  </View>
-                )}
-              />
-            )}
+            <FlatList
+              data={data}
+              renderItem={({ item }) => (
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.name}>Name: {item.name}</Text>
+                </View>
+              )}
+            />
           </View>
         </View>
       </View>
