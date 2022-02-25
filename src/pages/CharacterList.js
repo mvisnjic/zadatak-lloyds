@@ -1,4 +1,5 @@
 import { useFocusEffect } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -7,6 +8,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import bgImage from "../images/BackgroundPhoto.jpg";
 const axios = require("axios");
@@ -41,7 +43,7 @@ function getAllStarwarsPeople() {
     .catch((error) => console.log("Properly handle your exception here"));
 }
 
-function CharacterList() {
+function CharacterList({ navigation }) {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -55,6 +57,11 @@ function CharacterList() {
     })();
   }, []);
   // console.log(data);
+
+  function _onPressButton() {
+    navigation.navigate("CharacterDetails");
+  }
+
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
@@ -68,9 +75,14 @@ function CharacterList() {
                 // keyExtractor={({ id }, index) => id}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
-                  <View style={styles.detailsContainer}>
-                    <Text style={styles.name}>Name: {item.name}</Text>
-                  </View>
+                  <TouchableOpacity
+                    style={styles.detailsContainer}
+                    onPress={() => navigation.navigate("CharacterDetails")}
+                  >
+                    <View style={styles.detailsContainer}>
+                      <Text style={styles.name}>Name: {item.name}</Text>
+                    </View>
+                  </TouchableOpacity>
                 )}
               />
             )}
