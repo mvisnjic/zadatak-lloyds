@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import bgImage from "../images/BackgroundPhoto.jpg";
 const axios = require("axios");
-
 /* function to find all people. founded on github: https://gist.github.com/go-diego/3771c6917d9261a428d80fa6c3d904ff */
 function getAllStarwarsPeople() {
   let people = [];
@@ -43,34 +42,38 @@ function getAllStarwarsPeople() {
 }
 
 function CharacterList() {
+  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    let abortController = new AbortController();
+
     (async () => {
-      const starwarsPeople = await getAllStarwarsPeople();
-      for (let i = 0; i < starwarsPeople.length; i++) {
-        //allNames.push(starwarsPeople[i].name);
-        //console.log(starwarsPeople[i].name);
-        const element = starwarsPeople[i];
-        setData(element);
-        console.log(JSON.stringify(element.name));
-      }
+      setData(await getAllStarwarsPeople());
+      setLoading(false);
+      abortController.abort();
     })();
   }, []);
-
+  // console.log(data);
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
         <View style={styles.dataContainer}>
           <View>
-            <FlatList
-              data={data}
-              renderItem={({ item }) => (
-                <View style={styles.detailsContainer}>
-                  <Text style={styles.name}>Name: {item.name}</Text>
-                </View>
-              )}
-            />
+            {isLoading ? (
+              <ActivityIndicator />
+            ) : (
+              <FlatList
+                data={data}
+                // keyExtractor={({ id }, index) => id}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                  <View style={styles.detailsContainer}>
+                    <Text style={styles.name}>Name: {item.name}</Text>
+                  </View>
+                )}
+              />
+            )}
           </View>
         </View>
       </View>
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "stretch",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   bgImage: {
     flex: 1,
