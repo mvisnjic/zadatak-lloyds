@@ -7,7 +7,6 @@ import WelcomeScreen from "./src/pages/WelcomeScreen";
 import CharacterList from "./src/pages/CharacterList";
 import Favorite from "./src/pages/Favorite";
 import CharacterDetails from "./src/pages/CharacterDetails";
-
 const Stack = createNativeStackNavigator();
 
 function App() {

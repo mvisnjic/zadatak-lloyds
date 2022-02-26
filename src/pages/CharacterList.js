@@ -65,28 +65,28 @@ function CharacterList({ navigation }) {
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
-        <View style={styles.dataContainer}>
-          <View>
-            {isLoading ? (
-              <ActivityIndicator />
-            ) : (
-              <FlatList
-                data={data}
-                // keyExtractor={({ id }, index) => id}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.detailsContainer}
-                    onPress={() => navigation.navigate("CharacterDetails")}
-                  >
-                    <View style={styles.detailsContainer}>
-                      <Text style={styles.name}>Name: {item.name}</Text>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              />
-            )}
-          </View>
+        <View style={styles.container}>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <FlatList
+              data={data}
+              // keyExtractor={({ id }, index) => id}
+              keyExtractor={(item, index) => index.toString()}
+              initialNumToRender={1}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.detailsContainer}
+                  onPress={() => navigation.navigate("CharacterDetails")}
+                >
+                  <View style={styles.detailsContainer}>
+                    <Text style={styles.name}>Name: {item.name}</Text>
+                  </View>
+                  <View style={styles.space} />
+                </TouchableOpacity>
+              )}
+            />
+          )}
         </View>
       </View>
     </ImageBackground>
@@ -105,25 +105,28 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flex: 1,
+    paddingVertical: 10,
+    // elevation: 3,
+    justifyContent: "center",
     alignItems: "flex-start",
-    justifyContent: "flex-start",
-    paddingVertical: 20,
-    elevation: 3,
     borderRadius: 4,
     backgroundColor: "gray",
-    marginTop: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    marginTop: 5,
+    // margin: 10,
+    // paddingHorizontal: 10,
     opacity: 0.8,
   },
   name: {
-    fontSize: 16,
+    fontSize: 24,
     lineHeight: 21,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
     paddingHorizontal: 10,
     paddingVertical: 15,
+  },
+  space: {
+    marginBottom: 10,
   },
 });
 export default CharacterList;

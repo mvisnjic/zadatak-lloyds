@@ -6,7 +6,7 @@ function CharacterDetails({ navigation }) {
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
       <View style={styles.container}>
-        <Text style={styles.text}>Ime</Text>
+        <View style={styles.dataContainer}></View>
       </View>
     </ImageBackground>
   );
