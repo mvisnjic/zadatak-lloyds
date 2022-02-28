@@ -1,5 +1,3 @@
-import { useFocusEffect } from "@react-navigation/native";
-import { NavigationContainer } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -56,12 +54,6 @@ function CharacterList({ navigation }) {
       abortController.abort();
     })();
   }, []);
-  // console.log(data);
-
-  function _onPressButton() {
-    navigation.navigate("CharacterDetails");
-  }
-
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
@@ -72,15 +64,23 @@ function CharacterList({ navigation }) {
             <FlatList
               data={data}
               // keyExtractor={({ id }, index) => id}
-              keyExtractor={(item, index) => index.toString()}
+              // keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(item) => item.name}
               initialNumToRender={1}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.detailsContainer}
-                  onPress={() => navigation.navigate("CharacterDetails")}
+                  onPress={() =>
+                    navigation.navigate("CharacterDetails", { data: item })
+                  }
                 >
                   <View style={styles.detailsContainer}>
-                    <Text style={styles.name}>Name: {item.name}</Text>
+                    <Text style={styles.name}>
+                      Name: {item.name}
+                      {console.log(
+                        `${item.name} values: ${Object.values(item)}`
+                      )}
+                    </Text>
                   </View>
                   <View style={styles.space} />
                 </TouchableOpacity>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: "gray",
     marginTop: 5,
     // margin: 10,
-    // paddingHorizontal: 10,
+    marginHorizontal: 4,
     opacity: 0.8,
   },
   name: {
