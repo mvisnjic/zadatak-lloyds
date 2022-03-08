@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ImageBackground,
-  Pressable,
   TouchableOpacity,
 } from "react-native";
-import { IconButton, Colors } from "react-native-paper";
 import bgImage from "../images/BackgroundPhoto.jpg";
 
 function CharacterDetails({ route, navigation }) {
@@ -76,7 +73,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    // lineHeight: 5,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
