@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ImageBackground, Button } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import { IconButton, Colors } from "react-native-paper";
 import bgImage from "../images/BackgroundPhoto.jpg";
 
@@ -20,12 +27,12 @@ function CharacterDetails({ route, navigation }) {
           <Text style={styles.text}>Gender: {char.gender}</Text>
         </View>
         <View style={styles.favIconContainer}>
-          <IconButton
-            icon="star"
-            color={Colors.white}
-            size={40}
-            onPress={() => console.log("Pressed")}
-          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("MyStarWarsFavorites")}
+          >
+            <Text style={styles.buttonText}>Add to favorites</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ImageBackground>
@@ -35,16 +42,13 @@ function CharacterDetails({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: "flex-start",
     backgroundColor: "black",
     marginVertical: 35,
     opacity: 0.7,
     backgroundColor: "gray",
-    flexDirection: "row",
   },
   dataContainer: {
     flex: 1,
-    // backgroundColor: "white",
     marginLeft: 15,
     justifyContent: "space-evenly",
     alignItems: "flex-start",
@@ -59,7 +63,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   favIconContainer: {
-    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 100,
+    marginBottom: 5,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "black",
+  },
+  buttonText: {
+    fontSize: 20,
+    // lineHeight: 5,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
   },
 });
 

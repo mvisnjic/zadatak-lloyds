@@ -63,8 +63,6 @@ function CharacterList({ navigation }) {
           ) : (
             <FlatList
               data={data}
-              // keyExtractor={({ id }, index) => id}
-              // keyExtractor={(item, index) => index.toString()}
               keyExtractor={(item) => item.name}
               initialNumToRender={1}
               renderItem={({ item }) => (
@@ -99,13 +97,11 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flex: 1,
     paddingVertical: 10,
-    // elevation: 3,
     justifyContent: "center",
     alignItems: "flex-start",
     borderRadius: 4,
     backgroundColor: "gray",
     marginTop: 5,
-    // margin: 10,
     marginHorizontal: 4,
     opacity: 0.8,
   },
