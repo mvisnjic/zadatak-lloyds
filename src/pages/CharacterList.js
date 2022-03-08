@@ -70,17 +70,10 @@ function CharacterList({ navigation }) {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.detailsContainer}
-                  onPress={() =>
-                    navigation.navigate("CharacterDetails", { data: item })
-                  }
+                  onPress={() => navigation.navigate("CharacterDetails", item)}
                 >
                   <View style={styles.detailsContainer}>
-                    <Text style={styles.name}>
-                      Name: {item.name}
-                      {console.log(
-                        `${item.name} values: ${Object.values(item)}`
-                      )}
-                    </Text>
+                    <Text style={styles.name}>Name: {item.name}</Text>
                   </View>
                   <View style={styles.space} />
                 </TouchableOpacity>
