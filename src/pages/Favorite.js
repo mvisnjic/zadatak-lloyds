@@ -1,12 +1,20 @@
 import * as React from "react";
-import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  Flatlist,
+} from "react-native";
 import bgImage from "../images/BackgroundPhoto.jpg";
 
-function Favorite() {
+function Favorite(route) {
+  const test = route.params;
+  console.log(test);
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
       <View style={styles.container}>
-        <Text>People</Text>
+        <Text></Text>
       </View>
     </ImageBackground>
   );

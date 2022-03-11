@@ -5,10 +5,28 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+import React, { useState, useEffect } from "react";
 import bgImage from "../images/BackgroundPhoto.jpg";
+import { useFocusEffect } from "@react-navigation/native";
 
 function CharacterDetails({ route, navigation }) {
   const char = route.params;
+  // console.log(char);
+
+  const [fav, setFav] = useState(false);
+  const [btnText, setBtnText] = useState("Add to favorites");
+
+  function _checkFav() {
+    if (!fav) {
+      setFav(true);
+      setBtnText("Added.");
+    } else {
+      setFav(false);
+      setBtnText("Add to favorites");
+    }
+  }
+
+  useEffect(() => {});
 
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
@@ -26,9 +44,13 @@ function CharacterDetails({ route, navigation }) {
         <View style={styles.favIconContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("MyStarWarsFavorites")}
+            onPress={() => {
+              _checkFav();
+            }}
           >
-            <Text style={styles.buttonText}>Add to favorites</Text>
+            <Text style={styles.buttonText}>
+              {btnText} {console.log(fav)}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -8,8 +8,8 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import axios from "axios";
 import bgImage from "../images/BackgroundPhoto.jpg";
-const axios = require("axios");
 /* function to find all people. founded on github: https://gist.github.com/go-diego/3771c6917d9261a428d80fa6c3d904ff */
 function getAllStarwarsPeople() {
   let people = [];
@@ -54,6 +54,7 @@ function CharacterList({ navigation }) {
       abortController.abort();
     })();
   }, []);
+
   return (
     <ImageBackground source={bgImage} resizeMode="cover" style={styles.bgImage}>
       <View style={styles.container}>
@@ -64,13 +65,13 @@ function CharacterList({ navigation }) {
             <FlatList
               data={data}
               keyExtractor={(item) => item.name}
-              initialNumToRender={1}
+              initialNumToRender={10}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={styles.detailsContainer}
                   onPress={() => navigation.navigate("CharacterDetails", item)}
                 >
-                  <View style={styles.detailsContainer}>
+                  <View style={styles.detailsContainerTouchable}>
                     <Text style={styles.name}>Name: {item.name}</Text>
                   </View>
                   <View style={styles.space} />
@@ -101,6 +102,16 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     borderRadius: 4,
     backgroundColor: "gray",
+    marginTop: 5,
+    marginHorizontal: 4,
+    opacity: 0.8,
+  },
+  detailsContainerTouchable: {
+    flex: 1,
+    paddingVertical: 10,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    borderRadius: 4,
     marginTop: 5,
     marginHorizontal: 4,
     opacity: 0.8,
